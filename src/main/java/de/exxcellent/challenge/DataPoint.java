@@ -20,14 +20,14 @@ public class DataPoint {
         else return currentMinimum;
     }
 
-    String name;
-    String nameValue;
+    private String name;
+    private String nameValue;
 
-    String val1Name;
-    Integer value1;
+    private String val1Name;
+    private Integer value1;
 
-    String val2Name;
-    Integer value2;
+    private String val2Name;
+    private Integer value2;
 
     public DataPoint(String name, String val1Name, String val2Name) {
         this.name = name;

@@ -23,54 +23,20 @@ public final class App {
 
         System.out.println(Arrays.asList(args));
 
-        DataPoint min = DataPoint.createDatePointForWeather();
-        try {
-            InputStream is = App.class.getResourceAsStream("weather.csv");
-//            InputStream is = App.class.getResourceAsStream("football.csv");
-            BufferedReader r = new BufferedReader(new InputStreamReader(is));
-            String s;
-            boolean readHeader = false;
-            Map<String, Integer> columnIndex = new HashMap<>();
-            while ((s = r.readLine()) != null) {
-                System.out.println(s);
 
-                if(!readHeader) {
-                    StringTokenizer tokenizer = new StringTokenizer(s,",");
-                    int colValue = 0;
-                    while (tokenizer.hasMoreElements()) {
-                        columnIndex.put(tokenizer.nextToken(), colValue);
-                        colValue++;
-                    }
-                    readHeader = true;
-                    System.out.println(columnIndex);
-                }else {
-                    // read a line containing data
-                    String[] lineValues = s.split(",");
-                    System.out.println(Arrays.asList(lineValues));
+        MinSpreadFinder footballMinSpreadFinder = new MinSpreadFinder();
+        FootballCSVGenerator footballCSVGenerator = new FootballCSVGenerator(App.class.getResourceAsStream("football.csv"), footballMinSpreadFinder);
 
-                    if(!min.hasValues()) {
-                        readIntoDataPoint(min, columnIndex, lineValues);
-                    }else {
-                        DataPoint nextReadLineDataPoint = DataPoint.createDatePointForWeather();
-                        readIntoDataPoint(nextReadLineDataPoint, columnIndex, lineValues);
-
-                        min = DataPoint.getMinimum(min, nextReadLineDataPoint);
-                    }
-                }
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MinSpreadFinder weatherMinSpreadFinder = new MinSpreadFinder();
+        WeatherCSVGenerator weatherCSVGenerator = new WeatherCSVGenerator(App.class.getResourceAsStream("weather.csv"), weatherMinSpreadFinder);
 
         // Your preparation code …
 
-        String dayWithSmallestTempSpread = min.getSpread().toString() + " at " + min.getNameValue();     // Your day analysis function call …
+        String dayWithSmallestTempSpread = weatherMinSpreadFinder.getMinimumDataPoint().getNameValue();
         System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
 
-        String teamWithSmallestGoalSpread = "A good team"; // Your goal analysis function call …
-        System.out.printf("Team with smallest goal spread       : %s%n", min.getNameValue());
+        String teamWithSmallestGoalSpread = footballMinSpreadFinder.getMinimumDataPoint().getNameValue();
+        System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
     }
 
     private static void readIntoDataPoint(DataPoint min, Map<String, Integer> columnIndex, String[] lineValues) {
