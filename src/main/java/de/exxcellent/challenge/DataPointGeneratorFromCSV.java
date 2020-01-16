@@ -1,26 +1,33 @@
 package de.exxcellent.challenge;
 
+import javax.management.RuntimeMBeanException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public abstract class DataPointGeneratorFromCSV {
 
+    public static final String CSV_SEPARATOR = ",";
+    private String classPathResource;
     private InputStream inputStreamToCSV;
     private HandleDataPoint handleDataPoint;
-    public DataPointGeneratorFromCSV (InputStream inputStream, HandleDataPoint handleDataPoint) {
-        this.inputStreamToCSV = inputStream;
+    public DataPointGeneratorFromCSV (String classpathResource, HandleDataPoint handleDataPoint) {
+        this.classPathResource = classpathResource;
+        this.inputStreamToCSV = this.getClass().getResourceAsStream(this.classPathResource);
         this.handleDataPoint = handleDataPoint;
 
         readCSV();
     }
 
     public void readCSV() {
+
+        if(this.inputStreamToCSV == null) {
+            throw new RuntimeException("'"+this.classPathResource + "' cannot be found in the classpath");
+        }
+
         BufferedReader r = new BufferedReader(new InputStreamReader(this.inputStreamToCSV));
         String s;
         boolean readHeader = false;
@@ -30,17 +37,16 @@ public abstract class DataPointGeneratorFromCSV {
 //                System.out.println(s);
 
                 if (!readHeader) {
-                    StringTokenizer tokenizer = new StringTokenizer(s, ",");
-                    int colValue = 0;
-                    while (tokenizer.hasMoreElements()) {
-                        columnIndex.put(tokenizer.nextToken(), colValue);
-                        colValue++;
+                    String[] headers = s.split(CSV_SEPARATOR);
+                    for(int i = 0; i < headers.length; i++) {
+                        columnIndex.put(headers[i], i);
                     }
+
                     readHeader = true;
 //                    System.out.println(columnIndex);
                 } else {
                     // read a line containing data
-                    String[] lineValues = s.split(",");
+                    String[] lineValues = s.split(CSV_SEPARATOR);
 //                    System.out.println(Arrays.asList(lineValues));
 
                     DataPoint dataPoint = createInitialDataPoint();
@@ -52,6 +58,7 @@ public abstract class DataPointGeneratorFromCSV {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

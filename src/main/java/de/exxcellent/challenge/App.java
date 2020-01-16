@@ -1,10 +1,7 @@
 package de.exxcellent.challenge;
 
-import java.io.*;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * The entry class for your solution. This class is only aimed as starting point and not intended as baseline for your software
@@ -25,10 +22,10 @@ public final class App {
 
 
         MinSpreadFinder footballMinSpreadFinder = new MinSpreadFinder();
-        FootballCSVGenerator footballCSVGenerator = new FootballCSVGenerator(App.class.getResourceAsStream("football.csv"), footballMinSpreadFinder);
+        new FootballDataPointGenerator("football.csv", footballMinSpreadFinder);
 
         MinSpreadFinder weatherMinSpreadFinder = new MinSpreadFinder();
-        WeatherCSVGenerator weatherCSVGenerator = new WeatherCSVGenerator(App.class.getResourceAsStream("weather.csv"), weatherMinSpreadFinder);
+        new WeatherDataPointGenerator("weather.csv", weatherMinSpreadFinder);
 
         // Your preparation code …
 
