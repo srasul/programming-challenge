@@ -1,6 +1,7 @@
-package de.exxcellent.challenge;
+package de.exxcellent.challenge.csv;
 
-import java.io.InputStream;
+import de.exxcellent.challenge.DataPoint;
+import de.exxcellent.challenge.HandleDataPoint;
 
 public class WeatherDataPointGenerator extends DataPointGeneratorFromCSV {
 

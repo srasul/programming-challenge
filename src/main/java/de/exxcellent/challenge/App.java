@@ -1,11 +1,10 @@
 package de.exxcellent.challenge;
 
-import java.util.Arrays;
-import java.util.Map;
+import de.exxcellent.challenge.csv.FootballDataPointGenerator;
+import de.exxcellent.challenge.csv.WeatherDataPointGenerator;
 
 /**
- * The entry class for your solution. This class is only aimed as starting point and not intended as baseline for your software
- * design. Read: create your own classes and packages as appropriate.
+ * The starting point to do the calculation for the 'weather' and 'football' datasets. Run this class to see the result
  *
  * @author Benjamin Schmid <benjamin.schmid@exxcellent.de>
  */
@@ -17,8 +16,6 @@ public final class App {
      * @param args The CLI arguments passed
      */
     public static void main(String... args) {
-
-        System.out.println(Arrays.asList(args));
 
 
         MinSpreadFinder footballMinSpreadFinder = new MinSpreadFinder();
@@ -34,11 +31,5 @@ public final class App {
 
         String teamWithSmallestGoalSpread = footballMinSpreadFinder.getMinimumDataPoint().getNameValue();
         System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
-    }
-
-    private static void readIntoDataPoint(DataPoint min, Map<String, Integer> columnIndex, String[] lineValues) {
-        min.setNameValue(lineValues[columnIndex.get(min.getName())]);
-        min.setValue1(Integer.valueOf(lineValues[columnIndex.get(min.getVal1Name())]));
-        min.setValue2(Integer.valueOf(lineValues[columnIndex.get(min.getVal2Name())]));
     }
 }
