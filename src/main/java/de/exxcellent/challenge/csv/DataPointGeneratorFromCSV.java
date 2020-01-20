@@ -17,6 +17,8 @@ import java.util.Map;
  *
  * TODO: what if the CSV file is very big? then we would need to do the readCSV method in the background
  * TODO: Logging
+ * TODO: csv files in need to be in the same package as the {@link App} class. change this to be more flexiable
+ * TODO: separate out how we get the data (via classpath, via file, via URL etc)
  */
 public abstract class DataPointGeneratorFromCSV {
 
