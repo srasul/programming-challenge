@@ -7,6 +7,9 @@ import de.exxcellent.challenge.csv.WeatherDataPointGenerator;
  * The starting point to do the calculation for the 'weather' and 'football' datasets. Run this class to see the result
  *
  * @author Benjamin Schmid <benjamin.schmid@exxcellent.de>
+ *
+ * TODO: handle command line args so that we can decide if we want to do football or weather case or both
+ * TODO: allow paths of csv file to be specified via CLI args
  */
 public final class App {
 
